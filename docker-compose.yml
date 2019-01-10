@@ -1,0 +1,39 @@
+version: '3.3'
+services:
+    nginx:
+        build: ./nginx
+        container_name: nginx
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./nginx/conf:/etc/nginx/conf.d
+            - ./nginx/www:/var/www/
+            - ./nginx/logs:/var/log/nginx/
+            - ./nginx/html:/usr/share/nginx/html/
+        links:
+            - php
+ mysql:
+        build: ./mysql
+        ports:
+            - "3306:3306"
+        container_name: mysql
+         environment:
+            - MYSQL_ROOT_PASSWORD=densS
+            - MYSQL_DATABASE=newbase
+            - MYSQL_USER=newuser
+            - MYSQL_PASSWORD=densS
+
+        volumes:
+            - ./mysql:/var/lib/mysql
+
+
+    php:
+        build: ./php-fpm
+        container_name: php-fpm
+
+        volumes:
+            - /home/dens/dockerlamp/nginx/www:/var/www
+
+        links:
+            - mysql
