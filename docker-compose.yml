@@ -1,7 +1,8 @@
-version: '3.3'
-services:
+ version: '3.3'
+
+ services:
     nginx:
-        image: fixdens:nginx
+        image: fixdens/nmp:nginx
         container_name: nginx
         ports:
             - "80:80"
@@ -13,12 +14,12 @@ services:
             - ./nginx/html:/usr/share/nginx/html/
         links:
             - php
- mysql:
-        image: fixdens:mysql
+    mysql:
+        image: fixdens/nmp:mysql
         ports:
             - "3306:3306"
         container_name: mysql
-         environment:
+        environment:
             - MYSQL_ROOT_PASSWORD=newbase
             - MYSQL_DATABASE=newbase
             - MYSQL_USER=newbase
@@ -29,11 +30,15 @@ services:
 
 
     php:
-        image: fixdens:php-fpm
+        image: fixdens/nmp:php-fpm
         container_name: php-fpm
 
         volumes:
-            - /home/dens/dockerlamp/nginx/www:/var/www
+            - /nginx/www:/var/www
 
         links:
             - mysql
+
+
+
+
